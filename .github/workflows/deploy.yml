@@ -13,51 +13,66 @@ jobs:
         - name: Check out the repo
           uses: actions/checkout@v3
 
-        - name: Log in to Docker Hub
-          uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-          with:
-              username: ${{ secrets.DOCKER_USERNAME }}
-              password: ${{ secrets.DOCKER_PASSWORD }}
+#        - name: Log in to Docker Hub
+#          uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+#          with:
+#              username: ${{ secrets.DOCKER_USERNAME }}
+#              password: ${{ secrets.DOCKER_PASSWORD }}
+#
+#        - name: Extract frontend-metadata (tags, labels) for Docker
+#          id: meta-frontend
+#          uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+#          with:
+#              images: nikprime/nikantipin.front
+#
+#        - name: Extract backend-metadata (tags, labels) for Docker
+#          id: meta-backend
+#          uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+#          with:
+#            images: nikprime/nikantipin.back
+#
+#        - name: Build frontend and push Docker image
+#          uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+#          with:
+#            context: ./apps/frontend
+#            push: true
+#            tags: ${{ steps.meta-frontend.outputs.tags }}
+#            labels: ${{ steps.meta-frontend.outputs.labels }}
+#
+#        - name: Build backend and push Docker image
+#          uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+#          with:
+#            context: ./apps/backend
+#            push: true
+#            tags: ${{ steps.meta-backend.outputs.tags }}
+#            labels: ${{ steps.meta-backend.outputs.labels }}
 
-        - name: Extract frontend-metadata (tags, labels) for Docker
-          id: meta-frontend
-          uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-          with:
-              images: nikprime/nikantipin.front
-
-        - name: Extract backend-metadata (tags, labels) for Docker
-          id: meta-backend
-          uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-          with:
-            images: nikprime/nikantipin.back
-
-        - name: Build frontend and push Docker image
-          uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-          with:
-            context: ./apps/frontend
-            push: true
-            tags: ${{ steps.meta-frontend.outputs.tags }}
-            labels: ${{ steps.meta-frontend.outputs.labels }}
-
-        - name: Build backend and push Docker image
-          uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-          with:
-            context: ./apps/backend
-            push: true
-            tags: ${{ steps.meta-backend.outputs.tags }}
-            labels: ${{ steps.meta-backend.outputs.labels }}
-
-#        - name: Deploy Stack
-#          uses: appleboy/ssh-action@master
+#        - name: Copy docker-compose.yml
+#          uses: appleboy/scp-action@master
 #          with:
 #            host: ${{ secrets.VPS_SSH_HOST }}
 #            username: ${{ secrets.VPS_SSH_USERNAME }}
-#            key: ${{ secrets.KEY }}
-#            script: |
-#                cd /root/backend
-#                docker stop ${{ secrets.CONTAINER_NAME }} || true
-#                docker container rm ${{ secrets.CONTAINER_NAME }} || true
-#                docker image rm -f ${{ secrets.IMAGE_NAME }} || true
-#                docker run -d --name backend --publish 3000:3000 --env POSTGRES_HOST=${{ secrets.POSTGRES_HOST }} --env POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} --env POSTGRES_DATABASE=${{ secrets.POSTGRES_DATABASE }} --env POSTGRES_PORT=${{ secrets.POSTGRES_PORT }} --env POSTGRES_USERNAME=${{ secrets.POSTGRES_USERNAME }} --env JWT_KEY=${{ secrets.JWT_KEY }} --env JWT_KEY_EXPIRES_IN=${{ secrets.JWT_KEY_EXPIRES_IN }} nikprime/nikantipin.back:master
-#                docker exec backend npm run migrations:run --no-interaction
-            
+#            key: ${{ secrets.key }}
+#            source: "deploy/*"
+#            target: "."
+
+        - name: Deploy Stack
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.VPS_SSH_HOST }}
+            username: ${{ secrets.VPS_SSH_USERNAME }}
+            key: ${{ secrets.KEY }}
+            script: |
+              cd /root/deploy
+              cat <<EOF > common.env
+              POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
+              POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+              POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+              POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
+              POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+              JWT_KEY=${{ secrets.JWT_KEY }}
+              JWT_KEY_EXPIRES_IN=${{ secrets.JWT_KEY_EXPIRES_IN }}
+              BASE_API_URL=${{ secrets.BASE_API_URL }}
+              EOF
+              docker compose down
+              docker compose up

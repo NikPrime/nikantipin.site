@@ -1,13 +1,13 @@
 import { DataSource } from 'typeorm';
 import { join } from 'path';
 
-const {POSTGRES_HOST, POSTGRES_PORT, POSTGRES_DB, POSTGRES_USERNAME, POSTGRES_PASSWORD} = process.env;
+const {POSTGRES_HOST, POSTGRES_PORT, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD} = process.env;
 
 export const connectionSource = new DataSource({
         type: 'postgres',
         host: POSTGRES_HOST || 'localhost',
         port: parseInt(POSTGRES_PORT) || 5432,
-        username: POSTGRES_USERNAME || 'postgres',
+        username: POSTGRES_USER || 'postgres',
         password: POSTGRES_PASSWORD || 'password',
         database: POSTGRES_DB || 'nikantipin',
         migrations: ['src/migrations/*.ts'],
