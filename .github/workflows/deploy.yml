@@ -53,7 +53,7 @@ jobs:
             host: ${{ secrets.VPS_SSH_HOST }}
             username: ${{ secrets.VPS_SSH_USERNAME }}
             key: ${{ secrets.key }}
-            source: "./docker-compose.yml"
+            source: "package.json/"
             target: "."
 
         - name: Deploy Stack
