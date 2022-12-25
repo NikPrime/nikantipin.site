@@ -6,8 +6,6 @@ services:
       - "8080:8080"
     env_file:
       - common.env
-    secrets:
-      - BASE_API_URL
 
   backend:
     image: nikprime/nikantipin.back
