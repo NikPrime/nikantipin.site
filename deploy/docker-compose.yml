@@ -16,14 +16,6 @@ services:
       - "3000:3000"
     env_file:
       - common.env
-    secrets:
-      - POSTGRES_HOST
-      - POSTGRES_PASSWORD
-      - POSTGRES_DB
-      - POSTGRES_PORT
-      - POSTGRES_USER
-      - JWT_KEY
-      - JWT_KEY_EXPIRES_IN
 
   postgres:
     image: postgres:15.1
@@ -32,9 +24,5 @@ services:
       - ./postgres-data:/var/lib/postgresql/data
     env_file:
       - common.env
-    environment:
-      POSTGRES_DB: secrets.POSTGRES_DB
-      POSTGRES_USER: secrets.POSTGRES_USER
-      POSTGRES_PASSWORD: secrets.POSTGRES_PASSWORD
     ports:
       - "5432:5432"

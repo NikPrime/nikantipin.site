@@ -73,4 +73,5 @@ jobs:
               JWT_KEY=${{ secrets.JWT_KEY }}
               JWT_KEY_EXPIRES_IN=${{ secrets.JWT_KEY_EXPIRES_IN }}
               EOF
-            
+              docker compose down
+              docker compose up
