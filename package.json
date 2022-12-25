@@ -1,0 +1,16 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "client:dev": "lerna run client:dev --stream --scope nikantipin.front",
+    "api:dev": "lerna run api:dev --stream --scope nikantipin.back"
+
+  },
+  "devDependencies": {
+    "lerna": "^6.1.0"
+  }
+}
