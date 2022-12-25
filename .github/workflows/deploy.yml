@@ -72,6 +72,7 @@ jobs:
               POSTGRES_USER=${{ secrets.POSTGRES_USER }}
               JWT_KEY=${{ secrets.JWT_KEY }}
               JWT_KEY_EXPIRES_IN=${{ secrets.JWT_KEY_EXPIRES_IN }}
+              BASE_API_URL=${{ secrets.BASE_API_URL }}
               EOF
               docker compose down
               docker compose up
