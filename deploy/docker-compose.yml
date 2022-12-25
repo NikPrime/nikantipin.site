@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: nikprime/nikantipin.front
+    image: nikprime/nikantipin.front:latest
     restart: always
     ports:
       - "8080:8080"
@@ -8,7 +8,7 @@ services:
       - common.env
 
   backend:
-    image: nikprime/nikantipin.back
+    image: nikprime/nikantipin.back:latest
     restart: always
     ports:
       - "3000:3000"
