@@ -4,6 +4,8 @@ services:
     restart: always
     ports:
       - "8080:8080"
+    env_file:
+      - common.env
     secrets:
       - BASE_API_URL
 
@@ -12,12 +14,14 @@ services:
     restart: always
     ports:
       - "3000:3000"
+    env_file:
+      - common.env
     secrets:
       - POSTGRES_HOST
       - POSTGRES_PASSWORD
-      - POSTGRES_DATABASE
+      - POSTGRES_DB
       - POSTGRES_PORT
-      - POSTGRES_USERNAME
+      - POSTGRES_USER
       - JWT_KEY
       - JWT_KEY_EXPIRES_IN
 
@@ -26,9 +30,11 @@ services:
     restart: always
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
+    env_file:
+      - common.env
     environment:
-      POSTGRES_DB: secrets.POSTGRES_DATABASE
-      POSTGRES_USER: secrets.POSTGRES_USERNAME
+      POSTGRES_DB: secrets.POSTGRES_DB
+      POSTGRES_USER: secrets.POSTGRES_USER
       POSTGRES_PASSWORD: secrets.POSTGRES_PASSWORD
     ports:
       - "5432:5432"
