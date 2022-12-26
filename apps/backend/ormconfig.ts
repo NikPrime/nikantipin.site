@@ -3,6 +3,13 @@ import { join } from 'path';
 
 const {POSTGRES_HOST, POSTGRES_PORT, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD} = process.env;
 
+// for test
+console.log('POSTGRES_HOST: ', POSTGRES_HOST)
+console.log('POSTGRES_PORT: ', POSTGRES_PORT)
+console.log('POSTGRES_DB: ', POSTGRES_DB)
+console.log('POSTGRES_USER: ', POSTGRES_USER)
+console.log('POSTGRES_PASSWORD: ', POSTGRES_PASSWORD)
+
 export const connectionSource = new DataSource({
         type: 'postgres',
         host: POSTGRES_HOST || 'localhost',

@@ -9,9 +9,10 @@ services:
 
   backend:
     image: nikprime/nikantipin.back:master
-    restart: always
     ports:
       - "3000:3000"
+    env_file:
+      - ./common.env
 
 #  postgres:
 #    image: postgres:15.1
