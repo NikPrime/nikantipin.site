@@ -64,13 +64,15 @@ jobs:
             key: ${{ secrets.KEY }}
             script: |
               cd /root/deploy
+              cat <<EOF > common.env
+              POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
+              POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+              POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+              POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
+              POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+              JWT_KEY=${{ secrets.JWT_KEY }}
+              JWT_KEY_EXPIRES_IN=${{ secrets.JWT_KEY_EXPIRES_IN }}
+              BASE_API_URL=${{ secrets.BASE_API_URL }}
+              EOF
               docker compose down
-              export POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
-              export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-              export POSTGRES_DB=${{ secrets.POSTGRES_DB }}
-              export POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
-              export POSTGRES_USER=${{ secrets.POSTGRES_USER }}
-              export JWT_KEY=${{ secrets.JWT_KEY }}
-              export JWT_KEY_EXPIRES_IN=${{ secrets.JWT_KEY_EXPIRES_IN }}
-              export BASE_API_URL=${{ secrets.BASE_API_URL }}
               docker compose up

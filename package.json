@@ -7,10 +7,14 @@
   ],
   "scripts": {
     "client:dev": "lerna run client:dev --stream --scope nikantipin.front",
-    "api:dev": "lerna run api:dev --stream --scope nikantipin.back"
-
+    "api:start": "lerna run api:start --stream --scope nikantipin.back",
+    "api:dev": "lerna run api:dev --stream --scope nikantipin.back",
+    "migrations:run": "lerna run migrations:run --scope nikantipin.back"
   },
   "devDependencies": {
     "lerna": "^6.1.0"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.13"
   }
 }
