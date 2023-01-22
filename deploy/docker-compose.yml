@@ -6,6 +6,8 @@ services:
       - "8080:8080"
     env_file:
       - common.env
+    networks:
+      - default
 
   backend:
     restart: always
@@ -14,3 +16,5 @@ services:
       - "3000:3000"
     env_file:
       - ./common.env
+    networks:
+      - default
